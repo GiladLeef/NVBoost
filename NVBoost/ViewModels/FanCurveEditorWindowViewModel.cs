@@ -15,12 +15,10 @@ public partial class FanCurveEditorWindowViewModel : ViewModelBase
         _currentFanCurve = fanCurve;
         SaveCurveCommand = ReactiveCommand.Create(() =>
         {
-            CurrentFanCurve.BaseFanCurve.GenerateGpuTempToFanSpeedMap();
+            CurrentFanCurve.BaseFanCurve.GenerateGPUTempToFanSpeedMap();
             return CurrentFanCurve;
         });
     }
-    
-    
     public FanCurveEditorWindowViewModel() : this(new FanCurveViewModel(FanCurve.DefaultFanCurve()))
     {
         

@@ -10,10 +10,10 @@ namespace nvboost_cli;
 public class Program
 {
     [Option(CommandOptionType.SingleValue, Description = "select gpu id", LongName = "gpu", ShortName = "g")]
-    public static uint GpuId { get; set; }
+    public static uint GPUId { get; set; }
     
-    [Option(CommandOptionType.NoValue, Description = "list available gpus", LongName = "listGpu")]
-    public static bool DoListGpus { get; set; }
+    [Option(CommandOptionType.NoValue, Description = "list available gpus", LongName = "listGPU")]
+    public static bool DoListGPUs { get; set; }
     
     [Option(CommandOptionType.SingleValue, Description = "set core offset mHz", LongName = "coreOffset", ShortName = "c")]
     public static int CoreOffset { get; set; } = -1;
@@ -21,7 +21,7 @@ public class Program
     [Option(CommandOptionType.SingleValue, Description = "set mem offset mHz", LongName = "memoryOffset",ShortName = "m")]
     public static int MemoryOffset { get; set; }= -1;
     
-    [Option(CommandOptionType.SingleValue, Description = "set power limit in mw", LongName = "powerLimit",ShortName = "p")]
+    [Option(CommandOptionType.SingleValue, Description = "set power limit in Watts", LongName = "powerLimit",ShortName = "p")]
     public static uint PowerLimit { get; set; }= 0;
     
     [Option(CommandOptionType.SingleValue, Description = "set fan speed", LongName = "fanSpeed",ShortName = "fs")]
@@ -32,25 +32,13 @@ public class Program
     
     [Option(CommandOptionType.SingleValue, Description = "load a fan speed curve json from the specified path.", LongName = "fanProfile",ShortName = "fp")]
     public static string FanSpeedCurveJson { get; set; }= "";
-    
-    // [Option(CommandOptionType.MultipleValue, Description = "select fan id", LongName = "fanId",ShortName = "fi")]
-    // public static int[] FanIds { get; set; }
-    
-    
-    
-    static NvmlService? _nvmlService;
-    NvmlGpu? _selectedGpu = null;
+static NvmlService? _nvmlService;
+    NvmlGPU? _SelectedGPU = null;
     
     public static void Main(string[] args)
         => CommandLineApplication.Execute<Program>(args);
 
-    // public static void Main(string[] args)
-    // {
-    //     var fancurve = FanCurve.DefaultFanCurve();
-    //     Console.WriteLine(fancurve.ToString());
-    //     return;
-    // }
-    
+
 
 
     private void OnExecute()
@@ -59,9 +47,9 @@ public class Program
         
         _nvmlService = new NvmlService();
 
-        if (DoListGpus)
+        if (DoListGPUs)
         {
-            foreach (var g in _nvmlService.GpuList)
+            foreach (var g in _nvmlService.GPUList)
             {
                 Console.WriteLine("Name: " + g.Name + "\tID: " + g.DeviceIndex);
             }
@@ -73,13 +61,13 @@ public class Program
         
 
         
-        foreach (var gpu in _nvmlService.GpuList)
+        foreach (var gpu in _nvmlService.GPUList)
         {
-            if (gpu.DeviceIndex == GpuId)
-                _selectedGpu = gpu;
+            if (gpu.DeviceIndex == GPUId)
+                _SelectedGPU = gpu;
         }
 
-        if (_selectedGpu == null)
+        if (_SelectedGPU == null)
         {
             Console.WriteLine("GPU index not found");
             return;
@@ -87,19 +75,19 @@ public class Program
         
         
         if (CoreOffset >= 0)
-            Console.WriteLine(_selectedGpu.SetClockOffset(NvmlClockType.NVML_CLOCK_GRAPHICS, NvmlPStates.NVML_PSTATE_0, CoreOffset));
+            Console.WriteLine(_SelectedGPU.SetClockOffset(NvmlClockType.NVML_CLOCK_GRAPHICS, NvmlPStates.NVML_PSTATE_0, CoreOffset));
         if (MemoryOffset >= 0)
-            Console.WriteLine(_selectedGpu.SetClockOffset(NvmlClockType.NVML_CLOCK_MEM, NvmlPStates.NVML_PSTATE_0, MemoryOffset));
+            Console.WriteLine(_SelectedGPU.SetClockOffset(NvmlClockType.NVML_CLOCK_MEM, NvmlPStates.NVML_PSTATE_0, MemoryOffset));
         if (PowerLimit > 0)
-            Console.WriteLine(_selectedGpu.SetPowerLimit(PowerLimit));
+            Console.WriteLine(_SelectedGPU.SetPowerLimit(PowerLimit));
 
         if (FanSpeed >= 0)
         {
-            _selectedGpu.ApplySpeedToAllFans((uint)FanSpeed);
+            _SelectedGPU.ApplySpeedToAllFans((uint)FanSpeed);
         }
 
         if (AutoFanSpeed)
-            _selectedGpu.ApplyPolicyToAllFans(NvmlFanControlPolicy.NVML_FAN_POLICY_TEMPERATURE_CONTINOUS_SW);
+            _SelectedGPU.ApplyPolicyToAllFans(NvmlFanControlPolicy.NVML_FAN_POLICY_TEMPERATURE_CONTINOUS_SW);
 
         if (FanSpeedCurveJson != "")
         {
@@ -122,16 +110,16 @@ public class Program
         while (!cancelToken.IsCancellationRequested)
         {
             Thread.Sleep(updateDelayMilliseconds);
-            //get gpu temperature
-            if (_selectedGpu is null || _selectedGpu.GpuTemperature == LastFanTemp)
+            
+            if (_SelectedGPU is null || _SelectedGPU.GPUTemperature == LastFanTemp)
             {
                 Console.WriteLine("No temp change since last update. skipping");
                 continue;
             }
                 
-            LastFanTemp = _selectedGpu.GpuTemperature;
-            Console.WriteLine($"Gpu temp: {_selectedGpu.GpuTemperature}, Fan Speed: {fanCurve.GpuTempToFanSpeedMap[_selectedGpu.GpuTemperature]}");
-            _selectedGpu.ApplySpeedToAllFans(fanCurve.GpuTempToFanSpeedMap[_selectedGpu.GpuTemperature]);
+            LastFanTemp = _SelectedGPU.GPUTemperature;
+            Console.WriteLine($"GPU temp: {_SelectedGPU.GPUTemperature}, Fan Speed: {fanCurve.GPUTempToFanSpeedMap[_SelectedGPU.GPUTemperature]}");
+            _SelectedGPU.ApplySpeedToAllFans(fanCurve.GPUTempToFanSpeedMap[_SelectedGPU.GPUTemperature]);
         }
     }
 

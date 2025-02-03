@@ -12,13 +12,11 @@ public partial class NewOcProfileWindowViewModel : ViewModelBase
     MainWindowViewModel _mainWindowViewModel;
 
     [ObservableProperty] private uint _powerLimitSliderValue;
-    [ObservableProperty] private uint _gpuClockOffsetSliderValue;
+    [ObservableProperty] private uint _GpuClockOffsetSliderValue;
     [ObservableProperty] private uint _memClockOffsetSliderValue;
     [ObservableProperty] private string? _name;
     [ObservableProperty] private FanCurveViewModel? _selectedFanCurve;
-    
-    
-    public NvmlGpu? SelectedGpu => _mainWindowViewModel.SelectedGpu;
+    public NvmlGPU? SelectedGPU => _mainWindowViewModel.SelectedGPU;
     public ObservableCollection<FanCurveViewModel>? FanCurvesList => MainWindowViewModel.FanCurvesList;
 
 
@@ -32,12 +30,8 @@ public partial class NewOcProfileWindowViewModel : ViewModelBase
     }
     
     public ReactiveCommand<Unit, OcProfile> CreateProfileCommand { get; }
-    
-    
     public void CancelButtonCommand()
     {
         
     }
-    
-    
 }

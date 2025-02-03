@@ -82,16 +82,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
         var result = await dialog.ShowDialog<SudoPassword?>(this);
         interaction.SetOutput(result);
-    }
-    
-    // private void InitializeComponent()
-    // {
-    //     AvaloniaXamlLoader.Load(this);
-    //     var viewModel = DataContext as MainWindowViewModel;
-    //     ComboBox comboBox = this.Find<ComboBox>("GpuSelector");
-    //     comboBox.ItemsSource = viewModel.NvmlService.GpuList;
-    //     comboBox.SelectedIndex = 0;
-    // }
+    }    
 
 
     private void Window_OnClosing(object? sender, WindowClosingEventArgs e)
@@ -101,7 +92,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
     private void FanComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        ViewModel.SelectedGpuFan = ((NvmlGpuFan)(e.AddedItems[0]));
+        ViewModel.SelectedGPUFan = ((NvmlGPUFan)(e.AddedItems[0]));
     }
     
 

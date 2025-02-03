@@ -4,9 +4,9 @@ public struct NvmlClockOffset_v1
 {
     public NvmlClockOffset_v1()
     {
-        //#define NVML_STRUCT_VERSION(data, ver) (unsigned int)(sizeof(nvml ## data ## _v ## ver ## _t) | \
-        // (ver << 24U))
-        //#define nvmlClockOffset_v1 NVML_STRUCT_VERSION(ClockOffset, 1)
+        
+        
+        
         
         Version = 16777240;
     }

@@ -22,11 +22,11 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // Line below is needed to remove Avalonia data validation.
-            // Without this line, you will get duplicate validations from both Avalonia and CT
+            
+            
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            // No need for null check on desktop, as Avalonia guarantees it will not be null
+            
             desktop.MainWindow = new MainWindow { DataContext = new MainWindowViewModel() };
         }
 
@@ -35,7 +35,7 @@ public partial class App : Application
 
     private void TrayIcon_OnClicked(object? sender, EventArgs e)
     {
-        // Make sure that WindowsManager.AllWindows is not null before accessing it
+        
         var mainWindow = WindowsManager.AllWindows?.FirstOrDefault(x => x.Name == "MainOcWindow");
 
         if (mainWindow != null)
@@ -46,7 +46,7 @@ public partial class App : Application
 
     private void NativeMenuItem_OnClick(object? sender, EventArgs e)
     {
-        // It's safe to exit here, no need to check for null
+        
         Environment.Exit(0);
     }
 }

@@ -16,21 +16,8 @@ using nvboost.ViewModels;
 
 namespace nvboost.NVML;
 
-
-    /// <summary>
-    /// Encapsulates a GPU Device in way that a csharp user doesn't have
-    /// to worry about Nvml native interop
-    /// </summary>
-    /// <remarks>
-    /// To Use:
-    /// 1. Call static nvmlInit before anything else
-    /// 2. Use static GetDeviceCount to enumerate devices
-    /// 3. Create an instance of NvGpu for each device
-    /// 4. Call static nvmlShutdown() when done with all NvGpu instances
-    /// GetDeviceCount is not guaranteed to enumerate devices in the same 
-    /// order across reboots
-    /// </remarks>
-    public class NvmlGpu : INotifyPropertyChanged
+    
+    public class NvmlGPU : INotifyPropertyChanged
     {
         private const uint MAX_NAME_LENGTH = 100;
 
@@ -41,17 +28,17 @@ namespace nvboost.NVML;
         public uint DeviceIndex { get; private set; }
         
         
-        /// <summary>
-        /// GPU Name
-        /// </summary>
+        
+        
+        
         public string Name { get; }
 
-        /// <summary>
-        /// Initializes a new instance of NvGpu, using device index
-        /// to initialize handle and name for the device
-        /// </summary>
-        /// <param name="deviceIdx">device index</param>
-        public NvmlGpu(uint deviceIdx)
+        
+        
+        
+        
+        
+        public NvmlGPU(uint deviceIdx)
         {
             DeviceIndex = deviceIdx;
             var r = NvmlWrapper.nvmlDeviceGetHandleByIndex(deviceIdx, out _handle);
@@ -71,7 +58,7 @@ namespace nvboost.NVML;
             
             for (uint i = 0; i < GetFanCount().Item2; i++)
             {
-                _nvmlGpuFans.Add(new NvmlGpuFan(this,i));
+                _nvmlGPUFans.Add(new NvmlGPUFan(this,i));
             }
             
             Task.Run(() =>
@@ -84,19 +71,17 @@ namespace nvboost.NVML;
             });
         }
 
-        private List<NvmlGpuFan> _nvmlGpuFans = new();
-        public IReadOnlyList<NvmlGpuFan> FansList => _nvmlGpuFans;
+        private List<NvmlGPUFan> _nvmlGPUFans = new();
+        public IReadOnlyList<NvmlGPUFan> FansList => _nvmlGPUFans;
     
         public FanCurve? AppliedFanCurve { get; private set; }
         
-        
+        public uint GPUTemperature => GetTemperature().Item2;
+        public uint GPUPowerUsage => (uint)(GetPowerUsage().Item2 / 1000);
     
-        public uint GpuTemperature => GetTemperature().Item2;
-        public uint GpuPowerUsage => GetPowerUsage().Item2;
-    
-        public NvmlPStates GpuPState => GetPState().Item2;
+        public NvmlPStates GPUPState => GetPState().Item2;
 
-        public uint GpuClockCurrent => GetCurrentClock(NvmlClockType.NVML_CLOCK_GRAPHICS).Item2;
+        public uint GPUClockCurrent => GetCurrentClock(NvmlClockType.NVML_CLOCK_GRAPHICS).Item2;
         public uint MemClockCurrent => GetCurrentClock(NvmlClockType.NVML_CLOCK_MEM).Item2;
         public uint SmClockCurrent => GetCurrentClock(NvmlClockType.NVML_CLOCK_SM).Item2;
         public uint VideoClockCurrent => GetCurrentClock(NvmlClockType.NVML_CLOCK_VIDEO).Item2;
@@ -115,24 +100,21 @@ namespace nvboost.NVML;
         public ulong MemoryFree => GetMemoryUsage().Item2.Free;
         public ulong MemoryUsed => GetMemoryUsage().Item2.Used;
         
-        public NvmlUtilization GpuUtilization => GetUtilization().Item2;
+        public NvmlUtilization GPUUtilization => GetUtilization().Item2;
         
         public uint UtilizationCore => GetUtilization().Item2.gpu;
-        public uint UtilizationMemCtl => GetUtilization().Item2.memory;
         
 
         public string MemoryUsageString => $"{MemoryUsed/1000000}MB/{MemoryTotal/1000000}MB (Free: {MemoryFree/1000000}MB)";
-        
-    
         public uint TemperatureThresholdShutdown => GetTemperatureThreshold(NvlmTemperatureThreshold.NVML_TEMPERATURE_THRESHOLD_SHUTDOWN).Item2;
         public uint TemperatureThresholdSlowdown => GetTemperatureThreshold(NvlmTemperatureThreshold.NVML_TEMPERATURE_THRESHOLD_SLOWDOWN).Item2;
         public uint TemperatureThresholdThrottle => GetTemperatureThreshold(NvlmTemperatureThreshold.NVML_TEMPERATURE_THRESHOLD_GPU_MAX).Item2;
         
         
-        /// <summary>
-        /// Gets device utilization info
-        /// </summary>
-        /// <returns>utilization info and nvml return code</returns>
+        
+        
+        
+        
         public (NvmlReturnCode, NvmlUtilization) GetUtilization()
         {
             var r = NvmlWrapper.nvmlDeviceGetUtilizationRates(_handle, out NvmlUtilization u);
@@ -153,10 +135,10 @@ namespace nvboost.NVML;
 
         public bool ApplySpeedToAllFans(uint speed)
         {
-            // bool result = true;
-            // foreach (var f in FansList)
-            //     result &= f.SetSpeed(speed);
-            // return result;
+            
+            
+            
+            
 
             try
             {
@@ -190,10 +172,10 @@ namespace nvboost.NVML;
             }
         }
         
-        /// <summary>
-        /// Gets device temperature in degrees celsius
-        /// </summary>
-        /// <returns>device temperature and nvml return code</returns>
+        
+        
+        
+        
         public (NvmlReturnCode,uint) GetTemperature()
         {
             var r = NvmlWrapper.nvmlDeviceGetTemperature(_handle, NvmlTemperatureSensors.NVML_TEMPERATURE_GPU, out uint t);
@@ -235,16 +217,16 @@ namespace nvboost.NVML;
         
         public NvmlReturnCode SetClockOffset(NvmlClockType clockType, NvmlPStates pState, int clockOffsetMhz)
         {
-            // var clockOffset = new NvmlClockOffset_v1()
-            // {
-            //     Type = clockType,
-            //     PState = pState,
-            //     ClockOffsetMHz = clockOffsetMhz
-            // };
+            
+            
+            
+            
+            
+            
 
-            //return NvmlWrapper.nvmlDeviceSetClockOffsets(_handle, ref clockOffset);
+            
 
-            // Process? result = null;
+            
             
             try
             {
@@ -302,12 +284,12 @@ namespace nvboost.NVML;
             {
                 throw;
             }
-            // if (result.Item1 != 0)
-            // {
-            //     
-            // }
             
-            //return NvmlWrapper.nvmlDeviceSetPowerManagementLimit(_handle,limitMw);
+            
+            
+            
+            
+            
         }
 
         public NvmlReturnCode SetFanControlPolicy(uint fanId,NvmlFanControlPolicy policy)
@@ -413,7 +395,7 @@ namespace nvboost.NVML;
                 process.WaitForExit();
 
             Console.WriteLine(process.Id);
-            //var output = process.StandardOutput.ReadToEnd();
+            
             
             return process;
         }
@@ -438,14 +420,14 @@ namespace nvboost.NVML;
         
         private void UpdateProperties()
         {
-            //Console.WriteLine("update");
-            //OnPropertyChanged(nameof(GpuClockCurrent));
+            
+            
             foreach (var p in GetType().GetProperties())
             { 
                 OnPropertyChanged(p.Name);
             }
 
-            // GpuClockCurrent = _nvmlGpu.GetCurrentClock(NvmlClockType.NVML_CLOCK_GRAPHICS).Item2;
+            
         }
         
 

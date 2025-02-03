@@ -11,13 +11,13 @@ namespace nvboost.Models;
 
 public class NvmlService
 {
-    List<NvmlGpu> _gpuList = new();
-    //List<NvmlGpuVM> _gpuListVm = new();
+    List<NvmlGPU> _gpuList = new();
+    
 
     CancellationTokenSource _cts = new();
     
-    public IReadOnlyList<NvmlGpu> GpuList => _gpuList;
-    //public IReadOnlyList<NvmlGpuVM> GpuListVm => _gpuListVm;
+    public IReadOnlyList<NvmlGPU> GPUList => _gpuList;
+    
 
     public NvmlService()
     {
@@ -30,7 +30,7 @@ public class NvmlService
         NvmlWrapper.nvmlShutdown();
         _gpuList.Clear();
         
-        //_gpuListVm.Clear();
+        
         Console.WriteLine("NvmlService destroyed");
     }
 
@@ -42,9 +42,9 @@ public class NvmlService
 
         for (uint i = 0; i < deviceCount; i++)
         {
-            var g = new NvmlGpu(i);
+            var g = new NvmlGPU(i);
             _gpuList.Add(g);
-            //_gpuListVm.Add(new NvmlGpuVM(g));
+            
         }
 
         StartFanCurveUpdaterThread();
@@ -58,22 +58,18 @@ public class NvmlService
         {
             while (_cts.Token.IsCancellationRequested == false)
             {
-                foreach (var g in GpuList)
+                foreach (var g in GPUList)
                 {
                     if (g.AppliedFanCurve !=null)
-                        g.ApplySpeedToAllFans(g.AppliedFanCurve.GpuTempToFanSpeedMap[g.GpuTemperature]);
+                        g.ApplySpeedToAllFans(g.AppliedFanCurve.GPUTempToFanSpeedMap[g.GPUTemperature]);
                 }
             }
 
         });
     }
     
-
-    
     ~NvmlService()
     {
         Shutdown();
     }
-    
-    
 }

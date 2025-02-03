@@ -2,11 +2,11 @@ namespace nvboost_cli.NVML.NvmlTypes;
 
 public enum NvmlClockType
 {
-    NVML_CLOCK_GRAPHICS  = 0,        //!< Graphics clock domain
-    NVML_CLOCK_SM        = 1,        //!< SM clock domain
-    NVML_CLOCK_MEM       = 2,        //!< Memory clock domain
-    NVML_CLOCK_VIDEO     = 3,        //!< Video encoder/decoder clock domain
+    NVML_CLOCK_GRAPHICS  = 0,        
+    NVML_CLOCK_SM        = 1,        
+    NVML_CLOCK_MEM       = 2,        
+    NVML_CLOCK_VIDEO     = 3,        
 
-    // Keep this last
-    NVML_CLOCK_COUNT //!< Count of clock types
+    
+    NVML_CLOCK_COUNT 
 }

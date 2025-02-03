@@ -20,8 +20,6 @@ public partial class FanCurveViewModel : ViewModelBase
 
     public string Name => BaseFanCurve.Name;
     
-    
-    
     public FanCurveViewModel(FanCurve curve)
     {
         BaseFanCurve = curve;

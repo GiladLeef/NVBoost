@@ -20,10 +20,6 @@
         <Optimize>true</Optimize>
     </PropertyGroup>
 
-    
-    
-    
-    
     <ItemGroup>
       <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.1.1" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

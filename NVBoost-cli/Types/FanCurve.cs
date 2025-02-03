@@ -10,7 +10,7 @@ public class FanCurve
     public ObservableCollection<FanCurvePoint> CurvePoints { get; set; }
     
     [JsonIgnore]
-    public uint[] GpuTempToFanSpeedMap { get; private set; } = new uint[101];
+    public uint[] GPUTempToFanSpeedMap { get; private set; } = new uint[101];
 
     [JsonIgnore]
     public bool NeedsUpdate { get; private set; } = false;
@@ -24,16 +24,16 @@ public class FanCurve
     {
         Name = name;
         CurvePoints = new(curvePoints);
-        GenerateGpuTempToFanSpeedMap();
+        GenerateGPUTempToFanSpeedMap();
     }
 
-    public void GenerateGpuTempToFanSpeedMap()
+    public void GenerateGPUTempToFanSpeedMap()
     {
-        for (int i = 0; i < CurvePoints.Count-1; i++) //per ogni punto
+        for (int i = 0; i < CurvePoints.Count-1; i++) 
         {
-            for (uint j = CurvePoints[i].Temperature; j <= CurvePoints[i+1].Temperature; j++) //per ogni temperatura j tra i due punti
+            for (uint j = CurvePoints[i].Temperature; j <= CurvePoints[i+1].Temperature; j++) 
             {
-                GpuTempToFanSpeedMap[j] = MapGpuTempToFanPercent(CurvePoints[i].Temperature, CurvePoints[i + 1].Temperature,CurvePoints[i].FanSpeed,CurvePoints[i+1].FanSpeed,j);
+                GPUTempToFanSpeedMap[j] = MapGPUTempToFanPercent(CurvePoints[i].Temperature, CurvePoints[i + 1].Temperature,CurvePoints[i].FanSpeed,CurvePoints[i+1].FanSpeed,j);
             }
         }
      
@@ -88,18 +88,7 @@ public class FanCurve
                 FanSpeed = speed
             }
         );
-    }
-    
-    /// <summary>
-    /// Map GPU temperature (°C) to fan speed based on the available points
-    /// </summary>
-    /// <param name="temp1">temperature of curvepoint1</param>
-    /// <param name="temp2">temperature of curvepoint2</param>
-    /// <param name="perc1">fan speed of curvepoint1</param>
-    /// <param name="perc2">fan speed of curvepoint2</param>
-    /// <param name="intemp">the temperature to convert into fan speed</param>
-    /// <returns>fan speed % at the given intemp</returns>
-    private uint MapGpuTempToFanPercent(uint temp1, uint temp2, uint perc1, uint perc2, uint intemp)
+    }    private uint MapGPUTempToFanPercent(uint temp1, uint temp2, uint perc1, uint perc2, uint intemp)
     {
         return perc1 + (intemp-temp1)*(perc2-perc1)/(temp2-temp1);
     }
@@ -108,16 +97,12 @@ public class FanCurve
     {
         var final = "";
 
-        for (int i = 0; i < GpuTempToFanSpeedMap.Length; i++)
+        for (int i = 0; i < GPUTempToFanSpeedMap.Length; i++)
         {
-            final += $"GpuTemp: {i}, FanSpeed: {GpuTempToFanSpeedMap[i]}\n";
+            final += $"GPUTemp: {i}, FanSpeed: {GPUTempToFanSpeedMap[i]}\n";
         }
 
         return final;
     }
     
-    // public string ToJson()
-    // {
-    //     return JsonSerializer.Serialize(this);
-    // }
 }

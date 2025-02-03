@@ -10,17 +10,6 @@ namespace nvboost.Models;
 
 public static class FanCurvesFileManager
 {
-    //public ObservableCollection<FanCurve> LoadedFanCurves { get; private set; }
-
-
-
-    // void LoadFanCurves()
-    // {
-    //     LoadedFanCurves = LoadedFanCurves = new ObservableCollection<FanCurve>(GetFanCurves());
-    //
-    //     
-    // }
-
     public static List<FanCurve> GetFanCurves(string path)
     {
         if (!File.Exists(path))
@@ -31,7 +20,7 @@ public static class FanCurvesFileManager
         
         try
         {
-            //var deserialized = JsonSerializer.Deserialize<List<FanCurve>>(File.ReadAllText(path));
+            
             var deserialized = JsonConvert.DeserializeObject<List<FanCurve>>(File.ReadAllText(path));
             if (deserialized == null)
             {
@@ -74,40 +63,4 @@ public static class FanCurvesFileManager
     {
         await File.WriteAllTextAsync(path, JsonConvert.SerializeObject(fanCurves, Formatting.Indented));
     }
-    
-    // public async Task LoadFanCurvesAsync()
-    // {
-    //     if (!File.Exists(_path))
-    //     {
-    //         Console.WriteLine("File not found: " + _path + ", it will be created when you save a new curve.");
-    //         return;
-    //     }
-    //
-    //     try
-    //     {
-    //         var deserialized = JsonSerializer.Deserialize<ObservableCollection<FanCurve>>(await File.ReadAllTextAsync(_path));
-    //         if (deserialized == null)
-    //         {
-    //             Console.WriteLine("Error loading file " + _path);
-    //             return;
-    //         }
-    //         
-    //         LoadedFanCurves = deserialized;
-    //         Console.WriteLine("Successfully loaded "+_path);
-    //     }
-    //     catch (ArgumentNullException ex)
-    //     {
-    //         Console.WriteLine("Error loading file " + _path + ":\n" + ex);
-    //     }
-    //     catch (JsonException ex)
-    //     {
-    //         Console.WriteLine("Invalid "+ _path + " file:\n" + ex);
-    //         
-    //     }
-    // }
-    
-    // public async Task UpdateFanCurvesFileAsync()
-    // {
-    //     await File.WriteAllTextAsync(_path, JsonSerializer.Serialize(LoadedFanCurves));
-    // }
 }

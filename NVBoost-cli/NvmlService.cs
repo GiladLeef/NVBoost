@@ -4,10 +4,10 @@ namespace nvboost_cli;
 
 public class NvmlService
 {
-    List<NvmlGpu> _gpuList = new();
+    List<NvmlGPU> _gpuList = new();
 
     
-    public IReadOnlyList<NvmlGpu> GpuList => _gpuList;
+    public IReadOnlyList<NvmlGPU> GPUList => _gpuList;
 
     public NvmlService()
     {
@@ -30,7 +30,7 @@ public class NvmlService
 
         for (uint i = 0; i < deviceCount; i++)
         {
-            var g = new NvmlGpu(i);
+            var g = new NvmlGPU(i);
             _gpuList.Add(g);
         }
 
@@ -46,6 +46,4 @@ public class NvmlService
     {
         Shutdown();
     }
-    
-    
 }

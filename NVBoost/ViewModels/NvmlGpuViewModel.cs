@@ -2,17 +2,15 @@ using nvboost.NVML;
 
 namespace nvboost.ViewModels;
 
-public class NvmlGpuViewModel : ViewModelBase
+public class NvmlGPUViewModel : ViewModelBase
 {
-    private readonly NvmlGpu _nvmlGpu;
+    private readonly NvmlGPU _nvmlGPU;
 
-    public NvmlGpuViewModel(NvmlGpu nvmlGpu)
+    public NvmlGPUViewModel(NvmlGPU nvmlGPU)
     {
-        _nvmlGpu = nvmlGpu;
+        _nvmlGPU = nvmlGPU;
     }
     
-    public uint GpuTemperature { private set; get; }
-    public uint GpuPowerUsage { private set; get; }
-    
-    
+    public uint GPUTemperature { private set; get; }
+    public uint GPUPowerUsage { private set; get; }
 }
