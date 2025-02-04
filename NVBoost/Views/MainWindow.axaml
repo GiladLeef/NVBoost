@@ -194,15 +194,14 @@
         
         <Border Grid.Row="4" Grid.Column="0">
             <Grid ColumnDefinitions="8*,*,*,*">
-                <Label Grid.Row="0" Grid.Column="0" ZIndex="2" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="12">OC Profiles</Label>
-                <ComboBox SelectedItem="{Binding SelectedOcProfile}" ItemsSource="{Binding OcProfilesList}" Grid.Column="0" SelectedIndex="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+                <ComboBox SelectedItem="{Binding SelectedOcProfile}" ItemsSource="{Binding OcProfilesList}" Grid.Column="0" SelectedIndex="1" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <Label Content="{Binding Name} " />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button Grid.Column="1" Command="{Binding OcProfileApplyCommand}" VerticalAlignment="Center" HorizontalAlignment="Center">V</Button>
+                <Button Grid.Column="1" Command="{Binding OcProfileApplyCommand}" VerticalAlignment="Center" HorizontalAlignment="Center">OK</Button>
                 <Button Grid.Column="3" Command="{Binding OpenNewProfileWindowCommand}" VerticalAlignment="Center" HorizontalAlignment="Center">+</Button>
                 <Button Grid.Column="2" Command="{Binding DeleteOcProfile}" VerticalAlignment="Center" HorizontalAlignment="Center">-</Button>
             </Grid>
@@ -272,7 +271,6 @@
         
         <Border Grid.Column="1" Grid.Row="4">
             <Grid ColumnDefinitions="*,*,*">
-                <Label ZIndex="2" Grid.Column="1" FontSize="12" VerticalAlignment="Top" HorizontalAlignment="Center">Select GPU</Label>
                 <ComboBox SelectedItem="{Binding SelectedGPU}" ItemsSource="{Binding NvmlService.GPUList}" Grid.Column="0" Grid.ColumnSpan="2" SelectedIndex="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
