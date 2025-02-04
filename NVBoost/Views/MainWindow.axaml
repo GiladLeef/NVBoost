@@ -11,7 +11,7 @@
         x:Class="nvboost.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="NVBoost Nvidia Control Panel"
+        Title="NVBoost Control Panel"
         Name="MainOcWindow"
         Closed="Window_OnClosed"
         >
