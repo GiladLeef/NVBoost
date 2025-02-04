@@ -20,7 +20,7 @@
      <TrayIcon.Icons>
          <TrayIcons>
              <TrayIcon Icon="/Assets/tray-icon.ico" 
-                       ToolTipText="NVBoost Nvidia Control Panel"
+                       ToolTipText="NVBoost"
                        Clicked="TrayIcon_OnClicked"
                        >
                  <TrayIcon.Menu>
