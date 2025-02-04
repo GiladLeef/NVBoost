@@ -1,6 +1,6 @@
 [Desktop Entry]
 Version=1.0
-Name=NVBoost Nvidia Control Panel
+Name=NVBoost
 GenericName=NVidia GPU Manager
 Comment=NVidia GPU Manager
 Exec=/usr/local/bin/nvboost-gui
