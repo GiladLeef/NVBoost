@@ -246,7 +246,7 @@
 
                 <RadioButton Command="{Binding FanRadioButtonClicked}" CommandParameter="0" GroupName="FanControlMode" IsChecked="True" Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left">Auto</RadioButton>
                 <RadioButton Command="{Binding FanRadioButtonClicked}" CommandParameter="1" GroupName="FanControlMode" Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center">Manual</RadioButton>
-                <Slider x:Name="FanSpeedSlider" IsVisible="{Binding FanSpeedSliderVisible}" Minimum="0" Maximum="100" Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150"></Slider>
+                <Slider x:Name="FanSpeedSlider" IsVisible="{Binding FanSpeedSliderVisible}" Minimum="0" Maximum="100" Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="300"></Slider>
                 <Label Grid.Row="4" Grid.Column="0" IsVisible="{Binding FanSpeedSliderVisible}" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding #FanSpeedSlider.Value , StringFormat=\{0:0\}}"></Label>
 
                 <Button Grid.Row="4" Grid.Column="0" Command="{Binding FanApplyButtonClick}" CommandParameter="{Binding #FanSpeedSlider.Value}" VerticalAlignment="Center" HorizontalAlignment="Right">Apply</Button>
@@ -254,7 +254,7 @@
         </Border>
         
         <Border Grid.Row="3" Grid.Column="1">
-            <Grid RowDefinitions="*,10*,*" ColumnDefinitions="*,*,*">
+            <Grid RowDefinitions="*,6*,*" ColumnDefinitions="*,*,*">
                 <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" Classes="Header">Fan Curve</Label>
                 <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Series="{Binding SelectedFanCurve.CurvePointsSeries}"></lvc:CartesianChart>
                 <ComboBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" ItemsSource="{Binding FanCurvesList}" SelectedItem="{Binding SelectedFanCurve}">
@@ -264,7 +264,6 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left">Edit</Button>
                 <Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Command="{Binding OpenFanCurveEditorCommand}">New</Button>
             </Grid>
         </Border>
