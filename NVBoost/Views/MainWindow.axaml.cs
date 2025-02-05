@@ -92,10 +92,11 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
     private void FanComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        ViewModel.SelectedGPUFan = ((NvmlGPUFan)(e.AddedItems[0]));
+        if (ViewModel != null && e.AddedItems.Count > 0 && e.AddedItems[0] is NvmlGPUFan fan)
+        {
+            ViewModel.SelectedGPUFan = fan;
+        }
     }
-    
-
 
     private void Window_OnClosed(object? sender, EventArgs e)
     {

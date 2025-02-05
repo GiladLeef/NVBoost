@@ -28,16 +28,18 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             var jobj = JObject.Parse(File.ReadAllText(Program.DefaultDataPath + "/AutoApplyProfile.json"));
             var gpuid = jobj["gpu"]?.Value<uint>();
-            var profile = (string)jobj["profile"];
-                
-            
+            var profile = jobj["profile"]?.Value<string>() ?? string.Empty; // Ensure it's never null
+
             SelectedGPU = NvmlService.GPUList.FirstOrDefault(x => x.DeviceIndex == gpuid);
             SelectedOcProfile = OcProfilesList.FirstOrDefault(x => x.Name == profile);
-            OcProfileApplyCommand();
-            
+
+            if (SelectedOcProfile != null)
+            {
+                OcProfileApplyCommand();
+            }
         }  
     }
-    
+
     partial void OnSelectedFanCurveChanged(FanCurveViewModel? value)
     {
         

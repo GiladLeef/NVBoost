@@ -322,81 +322,76 @@ namespace nvboost.NVML;
             return(NvmlWrapper.nvmlDeviceGetTemperatureThreshold(_handle,temperatureThresholdType,out uint temperatureThreshold),temperatureThreshold);
         }
 
-        private (int,string) RunCommandWithBash(string command)
+        private (int, string) RunCommandWithBash(string command)
         {
-            var psi = new ProcessStartInfo();
-            psi.FileName = "/bin/bash";
-            psi.Arguments = command;
-            psi.RedirectStandardOutput = true;
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
+            var psi = new ProcessStartInfo
+            {
+                FileName = "/bin/bash",
+                Arguments = command,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-            
-            
             using var process = Process.Start(psi);
+            if (process == null)
+                throw new InvalidOperationException("Failed to start process.");
 
             process.WaitForExit();
-
-            
             var output = process.StandardOutput.ReadToEnd();
 
-            return (process.ExitCode,output);
+            return (process.ExitCode, output);
         }
-        
-        private (int,string) RunCliCommand(string args, string file="/usr/local/bin/nvboost")
+        private (int, string) RunCliCommand(string args, string file = "/usr/local/bin/nvboost")
         {
-            var psi = new ProcessStartInfo();
-            psi.FileName = file;
-            psi.Arguments = args;
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardInput = true;
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
+            var psi = new ProcessStartInfo
+            {
+                FileName = file,
+                Arguments = args,
+                RedirectStandardOutput = true,
+                RedirectStandardInput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-            
-            
             using var process = Process.Start(psi);
+            if (process == null)
+                throw new InvalidOperationException("Failed to start process.");
 
-            
-            
             process.WaitForExit();
-
-            
             var output = process.StandardOutput.ReadToEnd();
 
-            return (process.ExitCode,output);
+            return (process.ExitCode, output);
         }
-        
-        private Process RunSudoCliCommand(string args, string file="/usr/local/bin/nvboost",bool waitForExit = true)
+
+        private Process RunSudoCliCommand(string args, string file = "/usr/local/bin/nvboost", bool waitForExit = true)
         {
             if (SudoPasswordManager.CurrentPassword?.Password == null || SudoPasswordManager.CurrentPassword.IsExpired)
             {
                 throw new SudoPasswordExpiredException("Sudo password is expired");
             }
-            
-            
-            
-            
-            var psi = new ProcessStartInfo();
-            psi.FileName = "/usr/bin/bash";
-            psi.Arguments = $"-c \"/usr/bin/sudo -S "+file+" -g "+DeviceIndex+" "+args+"\"";
-            psi.RedirectStandardInput = true;
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
 
-            Console.WriteLine("Executing: "+psi.FileName+" "+psi.Arguments);
-            
-            
+            var psi = new ProcessStartInfo
+            {
+                FileName = "/usr/bin/bash",
+                Arguments = $"-c \"/usr/bin/sudo -S {file} -g {DeviceIndex} {args}\"",
+                RedirectStandardInput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            Console.WriteLine("Executing: " + psi.FileName + " " + psi.Arguments);
+
             var process = Process.Start(psi);
+            if (process == null)
+                throw new InvalidOperationException("Failed to start process.");
+
+            process.StandardInput.WriteLine(SudoPasswordManager.CurrentPassword.Password);
             
-            
-            process.StandardInput.Write(SudoPasswordManager.CurrentPassword.Password+"\n");
             if (waitForExit)
                 process.WaitForExit();
 
             Console.WriteLine(process.Id);
-            
-            
             return process;
         }
 
