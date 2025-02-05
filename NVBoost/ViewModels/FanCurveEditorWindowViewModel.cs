@@ -21,7 +21,7 @@ public partial class FanCurveEditorWindowViewModel : ViewModelBase
     }
     public FanCurveEditorWindowViewModel() : this(new FanCurveViewModel(FanCurve.DefaultFanCurve()))
     {
-        
+
     }
 
 
@@ -29,7 +29,7 @@ public partial class FanCurveEditorWindowViewModel : ViewModelBase
 
     public void CancelCommand()
     {
-        
+
     }
 
     public void AddPointCommand()

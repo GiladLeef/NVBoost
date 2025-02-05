@@ -14,10 +14,10 @@ public partial class FanCurveEditorWindow : ReactiveWindow<FanCurveEditorWindowV
     public FanCurveEditorWindow()
     {
         InitializeComponent();
-        
-        
+
+
         if (Design.IsDesignMode) return;
-            
+
         this.WhenActivated(action => action(ViewModel!.SaveCurveCommand.Subscribe(Close)));
     }
 

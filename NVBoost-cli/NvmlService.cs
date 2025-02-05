@@ -5,7 +5,6 @@ namespace nvboost_cli;
 public class NvmlService
 {
     List<NvmlGPU> _gpuList = new();
-
     
     public IReadOnlyList<NvmlGPU> GPUList => _gpuList;
 
@@ -38,10 +37,6 @@ public class NvmlService
         Console.WriteLine("NvmlService initialized");
     }
 
- 
-    
-
-    
     ~NvmlService()
     {
         Shutdown();

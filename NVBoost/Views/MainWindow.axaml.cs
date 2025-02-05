@@ -21,12 +21,12 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     public MainWindow()
     {
         InitializeComponent();
-            
+
         Closing += (s, e) =>
         {
             if (s is null)
                 return;
-            
+
             ((Window)s).Hide();
             e.Cancel = true;
         };
@@ -35,22 +35,22 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         {
             ViewModel!.WindowLoadedHandler();
         };
-        
+
         this.WhenActivated(action =>
         {
             action(ViewModel!.ShowOcProfileDialog.RegisterHandler(DoShowNewProfileDialogAsync));
 
             action(ViewModel!.ShowFanCurveEditorDialog.RegisterHandler(DoShowFanCurveEditorDialogAsync));
-            
+
             action(ViewModel!.ShowSudoPasswordRequestDialog.RegisterHandler(DoShowSudoPasswordRequestDialogAsync));
         });
 
         WindowsManager.AllWindows.Add(this);
-        
+
     }
-    
-   
-    
+
+
+
     private async Task DoShowNewProfileDialogAsync(IInteractionContext<NewOcProfileWindowViewModel, OcProfile?> interaction)
     {
         var dialog = new NewOcProfileWindow
@@ -61,7 +61,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         var result = await dialog.ShowDialog<OcProfile?>(this);
         interaction.SetOutput(result);
     }
-    
+
     private async Task DoShowFanCurveEditorDialogAsync(IInteractionContext<FanCurveEditorWindowViewModel, FanCurveViewModel?> interaction)
     {
         var dialog = new FanCurveEditorWindow
@@ -72,7 +72,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         var result = await dialog.ShowDialog<FanCurveViewModel?>(this);
         interaction.SetOutput(result);
     }
-    
+
     private async Task DoShowSudoPasswordRequestDialogAsync(IInteractionContext<SudoPasswordRequestWindowViewModel, SudoPassword?> interaction)
     {
         var dialog = new SudoPasswordRequestWindow
@@ -82,12 +82,12 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
         var result = await dialog.ShowDialog<SudoPassword?>(this);
         interaction.SetOutput(result);
-    }    
+    }
 
 
     private void Window_OnClosing(object? sender, WindowClosingEventArgs e)
     {
-        
+
     }
 
     private void FanComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -103,5 +103,5 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         MainWindowViewModel.NvmlService.Shutdown();
     }
 
-    
+
 }

@@ -33,9 +33,9 @@ public class ProfilesFileManager
                 Console.WriteLine("Error loading file " + _path);
                 return;
             }
-            
+
             LoadedProfiles = deserialized;
-            Console.WriteLine("Successfully loaded "+_path);
+            Console.WriteLine("Successfully loaded " + _path);
         }
         catch (ArgumentNullException ex)
         {
@@ -43,11 +43,11 @@ public class ProfilesFileManager
         }
         catch (JsonException ex)
         {
-            Console.WriteLine("Invalid "+ _path + " file:\n" + ex);
-            
+            Console.WriteLine("Invalid " + _path + " file:\n" + ex);
+
         }
     }
-    
+
     public async Task LoadProfilesAsync()
     {
         if (!File.Exists(_path))
@@ -64,9 +64,9 @@ public class ProfilesFileManager
                 Console.WriteLine("Error loading file " + _path);
                 return;
             }
-            
+
             LoadedProfiles = deserialized;
-            Console.WriteLine("Successfully loaded "+_path);
+            Console.WriteLine("Successfully loaded " + _path);
         }
         catch (ArgumentNullException ex)
         {
@@ -74,11 +74,11 @@ public class ProfilesFileManager
         }
         catch (JsonException ex)
         {
-            Console.WriteLine("Invalid "+ _path + " file:\n" + ex);
-            
+            Console.WriteLine("Invalid " + _path + " file:\n" + ex);
+
         }
     }
-    
+
     public async Task UpdateProfilesFileAsync()
     {
         await File.WriteAllTextAsync(_path, JsonConvert.SerializeObject(LoadedProfiles, Formatting.Indented));

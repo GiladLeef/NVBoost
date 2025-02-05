@@ -10,7 +10,7 @@ public class NvmlGPUViewModel : ViewModelBase
     {
         _nvmlGPU = nvmlGPU;
     }
-    
+
     public uint GPUTemperature { private set; get; }
     public uint GPUPowerUsage { private set; get; }
 }

@@ -12,15 +12,15 @@ using ReactiveUI;
 
 namespace nvboost.Views;
 
-public partial class SudoPasswordRequestWindow  : ReactiveWindow<SudoPasswordRequestWindowViewModel>
+public partial class SudoPasswordRequestWindow : ReactiveWindow<SudoPasswordRequestWindowViewModel>
 {
     public SudoPasswordRequestWindow()
     {
         InitializeComponent();
         DataContext = ViewModel;
-        
+
         if (Design.IsDesignMode) return;
-            
+
         this.WhenActivated(action => action(ViewModel!.SavePasswordCommand.Subscribe(Close)));
 
     }

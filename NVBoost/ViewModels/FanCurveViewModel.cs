@@ -13,33 +13,31 @@ public partial class FanCurveViewModel : ViewModelBase
 
     [ObservableProperty]
     ObservableCollection<ISeries> _curvePointsSeries;
-    
 
     public FanCurve BaseFanCurve { get; private set; }
 
-
     public string Name => BaseFanCurve.Name;
-    
+
     public FanCurveViewModel(FanCurve curve)
     {
         BaseFanCurve = curve;
-        CurvePointsSeries= new ObservableCollection<ISeries>(){GetSeries()};
+        CurvePointsSeries = new ObservableCollection<ISeries>() { GetSeries() };
     }
 
     public void UpdateSeries()
     {
-        CurvePointsSeries= new ObservableCollection<ISeries>(){GetSeries()};
+        CurvePointsSeries = new ObservableCollection<ISeries>() { GetSeries() };
     }
-    
+
     private LineSeries<ObservablePoint> GetSeries()
     {
         var series = new ObservableCollection<ObservablePoint>();
         foreach (var p in BaseFanCurve.CurvePoints)
         {
-            series.Add(new ObservablePoint(p.Temperature,p.FanSpeed));
-            
+            series.Add(new ObservablePoint(p.Temperature, p.FanSpeed));
+
         }
         return new LineSeries<ObservablePoint>(series);
     }
-    
+
 }

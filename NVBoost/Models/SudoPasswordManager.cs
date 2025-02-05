@@ -6,6 +6,6 @@ public static class SudoPasswordManager
 
     public static void RequestPasswordGui()
     {
-        
+
     }
 }

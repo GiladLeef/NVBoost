@@ -5,5 +5,5 @@ namespace nvboost.Models;
 
 public static class WindowsManager
 {
-    public static List<Window> AllWindows {private set; get;} = new List<Window>() ;
+    public static List<Window> AllWindows { private set; get; } = new List<Window>();
 }

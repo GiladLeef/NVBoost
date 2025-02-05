@@ -5,7 +5,7 @@ namespace nvboost.Models;
 
 public class SudoPassword
 {
-    
+
     public string Password { get; private set; }
     public DateTime ExpirationTime { get; private set; }
     public bool IsExpired => ExpirationTime < DateTime.Now;
@@ -16,7 +16,7 @@ public class SudoPassword
         ExpirationTime = expirationTime;
     }
 
-    public SudoPassword(string password,TimeSpan timeToExpiration)
+    public SudoPassword(string password, TimeSpan timeToExpiration)
     {
         Password = password;
         ExpirationTime = DateTime.Now.Add(timeToExpiration);

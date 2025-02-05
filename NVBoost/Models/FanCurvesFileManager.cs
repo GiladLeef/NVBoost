@@ -17,18 +17,18 @@ public static class FanCurvesFileManager
             Console.WriteLine("File not found: " + path + ", it will be created when you save a new curve.");
             return [];
         }
-        
+
         try
         {
-            
+
             var deserialized = JsonConvert.DeserializeObject<List<FanCurve>>(File.ReadAllText(path));
             if (deserialized == null)
             {
                 Console.WriteLine("Error loading file " + path);
                 return [];
             }
-            
-            Console.WriteLine("Successfully loaded "+path);
+
+            Console.WriteLine("Successfully loaded " + path);
             return deserialized;
         }
         catch (ArgumentNullException ex)
@@ -37,29 +37,29 @@ public static class FanCurvesFileManager
         }
         catch (JsonException ex)
         {
-            Console.WriteLine("Invalid "+ path + " file:\n" + ex);
-            
+            Console.WriteLine("Invalid " + path + " file:\n" + ex);
+
         }
 
         return [];
     }
 
-    public static void SaveFanCurves(string path,IEnumerable<FanCurve> fanCurves)
+    public static void SaveFanCurves(string path, IEnumerable<FanCurve> fanCurves)
     {
         File.WriteAllText(path, JsonConvert.SerializeObject(fanCurves, Formatting.Indented));
     }
-    
-    public static void SaveFanCurves(string path,IEnumerable<FanCurveViewModel> fanCurves)
+
+    public static void SaveFanCurves(string path, IEnumerable<FanCurveViewModel> fanCurves)
     {
         File.WriteAllText(path, JsonConvert.SerializeObject(fanCurves, Formatting.Indented));
     }
-    
-    public static async Task SaveFanCurvesAsync(string path,IEnumerable<FanCurve> fanCurves)
+
+    public static async Task SaveFanCurvesAsync(string path, IEnumerable<FanCurve> fanCurves)
     {
         await File.WriteAllTextAsync(path, JsonConvert.SerializeObject(fanCurves, Formatting.Indented));
     }
-    
-    public static async Task SaveFanCurvesAsync(string path,IEnumerable<FanCurveViewModel> fanCurves)
+
+    public static async Task SaveFanCurvesAsync(string path, IEnumerable<FanCurveViewModel> fanCurves)
     {
         await File.WriteAllTextAsync(path, JsonConvert.SerializeObject(fanCurves, Formatting.Indented));
     }

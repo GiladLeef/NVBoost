@@ -14,13 +14,13 @@ using nvboost.Models.Exceptions;
 
 namespace nvboost.ViewModels;
 
-public partial class MainWindowViewModel : ViewModelBase  
+public partial class MainWindowViewModel : ViewModelBase
 
 {
     [ObservableProperty] private NvmlGPU? _selectedGPU;
     [ObservableProperty] private NvmlGPUFan? _selectedGPUFan;
     [ObservableProperty] private OcProfile? _selectedOcProfile;
-    [ObservableProperty] private FanCurveViewModel? _selectedFanCurve;private bool _autoApplyProfileLoaded = false;
+    [ObservableProperty] private FanCurveViewModel? _selectedFanCurve; private bool _autoApplyProfileLoaded = false;
 
     public void WindowLoadedHandler()
     {
@@ -37,30 +37,28 @@ public partial class MainWindowViewModel : ViewModelBase
             {
                 OcProfileApplyCommand();
             }
-        }  
+        }
     }
 
     partial void OnSelectedFanCurveChanged(FanCurveViewModel? value)
     {
-        
+
         SelectedFanCurve!.UpdateSeries();
-        
-        
+
     }
 
     public void SaveAutoApplyProfile(OcProfile profile)
     {
-        
 
         if (SelectedGPU == null)
         {
             Console.WriteLine("No gpu selected.");
             return;
         }
-        
+
         File.WriteAllText(Program.DefaultDataPath + "/AutoApplyProfile.json", $"{{\"profile\":\"{profile.Name}\",\"gpu\":\"{SelectedGPU.DeviceIndex}\"}}");
     }
-    private readonly ProfilesFileManager _profilesFileManager=new(Program.DefaultDataPath+"/profiles.json");
+    private readonly ProfilesFileManager _profilesFileManager = new(Program.DefaultDataPath + "/profiles.json");
 
     public ObservableCollection<OcProfile> OcProfilesList => _profilesFileManager.LoadedProfiles;
 
@@ -70,13 +68,13 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void LoadFanCurvesFromFile()
     {
-        foreach (var fanCurve in FanCurvesFileManager.GetFanCurves(Program.DefaultDataPath+"/fan_curves.json"))
+        foreach (var fanCurve in FanCurvesFileManager.GetFanCurves(Program.DefaultDataPath + "/fan_curves.json"))
         {
             FanCurvesList.Add(new FanCurveViewModel(fanCurve));
         }
     }
 
-    public void KillFanCurveProcessCommand( )
+    public void KillFanCurveProcessCommand()
     {
         if (Program.FanCurveProcess is null || Program.FanCurveProcess.HasExited)
         {
@@ -91,10 +89,10 @@ public partial class MainWindowViewModel : ViewModelBase
     public Interaction<SudoPasswordRequestWindowViewModel, SudoPassword?> ShowSudoPasswordRequestDialog { get; }
 
     private uint _selectedFanRadioButton = 0;
-    
+
 
     private bool FanSpeedSliderVisible => _selectedFanRadioButton == 1;
-    
+
     public ICommand OpenNewProfileWindowCommand { get; private set; }
     public ICommand OpenFanCurveEditorCommand { get; private set; }
     public ICommand OpenSudoPasswordPromptCommand { get; private set; }
@@ -104,32 +102,30 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         if (!Directory.Exists(Program.DefaultDataPath))
             Directory.CreateDirectory(Program.DefaultDataPath);
-        
-        if (!Directory.Exists(Program.DefaultDataPath+"/temp"))
-            Directory.CreateDirectory(Program.DefaultDataPath+"/temp");
-        
-        foreach(var f in Directory.GetFiles(Program.DefaultDataPath+"/temp"))
+
+        if (!Directory.Exists(Program.DefaultDataPath + "/temp"))
+            Directory.CreateDirectory(Program.DefaultDataPath + "/temp");
+
+        foreach (var f in Directory.GetFiles(Program.DefaultDataPath + "/temp"))
             File.Delete(f);
-        
+
         LoadFanCurvesFromFile();
-        
-        
-            
-        
+
+
         ShowOcProfileDialog = new Interaction<NewOcProfileWindowViewModel, OcProfile?>();
         OpenNewProfileWindowCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var ocProfileWindowViewModel = new NewOcProfileWindowViewModel(this);
 
             var result = await ShowOcProfileDialog.Handle(ocProfileWindowViewModel);
-            
-            if (result !=null)
+
+            if (result != null)
                 OcProfilesList.Add(result);
 
             await _profilesFileManager.UpdateProfilesFileAsync();
         });
-        
-        
+
+
         ShowFanCurveEditorDialog = new Interaction<FanCurveEditorWindowViewModel, FanCurveViewModel?>();
         OpenFanCurveEditorCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -139,50 +135,44 @@ public partial class MainWindowViewModel : ViewModelBase
 
             if (result == null)
                 return;
-            
+
             if (FanCurvesList.Any(x => x.Name == result.Name))
             {
-                
+
                 FanCurveViewModel existingCurve = FanCurvesList.First(x => x.Name == result.Name);
                 existingCurve.BaseFanCurve.CurvePoints = result.BaseFanCurve.CurvePoints;
             }
             else
             {
-                
+
                 FanCurvesList.Add(result);
-            } 
-            
-            
-            await FanCurvesFileManager.SaveFanCurvesAsync(Program.DefaultDataPath+"/fan_curves.json", FanCurvesList.Select(x => x.BaseFanCurve));
+            }
 
-            
-            
 
-            
+            await FanCurvesFileManager.SaveFanCurvesAsync(Program.DefaultDataPath + "/fan_curves.json", FanCurvesList.Select(x => x.BaseFanCurve));
+
         });
-        
+
         ShowSudoPasswordRequestDialog = new Interaction<SudoPasswordRequestWindowViewModel, SudoPassword?>();
         OpenSudoPasswordPromptCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var sudoPasswordRequestWindowViewModel = new SudoPasswordRequestWindowViewModel();
 
             var result = await ShowSudoPasswordRequestDialog.Handle(sudoPasswordRequestWindowViewModel);
-            
-            if (result !=null)
+
+            if (result != null)
                 SudoPasswordManager.CurrentPassword = result;
 
         });
-        
-        
-          
+
     }
-public void DeleteOcProfile()
+    public void DeleteOcProfile()
     {
         if (SelectedOcProfile is not null)
             OcProfilesList.Remove(SelectedOcProfile);
-        FanCurvesFileManager.SaveFanCurves(Program.DefaultDataPath+"/fan_curves.json", FanCurvesList.Select(x => x.BaseFanCurve));
+        FanCurvesFileManager.SaveFanCurves(Program.DefaultDataPath + "/fan_curves.json", FanCurvesList.Select(x => x.BaseFanCurve));
     }
-    
+
     public void OcProfileApplyCommand()
     {
         if (SelectedGPU is null)
@@ -196,13 +186,14 @@ public void DeleteOcProfile()
         {
             SelectedOcProfile?.Apply(SelectedGPU);
             _autoApplyProfileLoaded = true;
-        }catch (SudoPasswordExpiredException)
+        }
+        catch (SudoPasswordExpiredException)
         {
-            
+
             OpenSudoPasswordPromptCommand.Execute(null);
         }
     }
-    
+
     public void OcProfileApplyCommand(NvmlGPU? gpu, OcProfile? profile)
     {
         if (gpu is null)
@@ -215,19 +206,20 @@ public void DeleteOcProfile()
         try
         {
             profile?.Apply(gpu);
-        }catch (SudoPasswordExpiredException)
+        }
+        catch (SudoPasswordExpiredException)
         {
-            
+
             OpenSudoPasswordPromptCommand.Execute(null);
         }
     }
-    
+
 
     bool CanOcProfileApplyCommand()
     {
         return SelectedGPU != null;
     }
-    
+
     public bool FanApplyButtonClick(uint speed)
     {
         if (SelectedGPUFan is null || SelectedGPU is null) return false;
@@ -243,9 +235,10 @@ public void DeleteOcProfile()
                 default:
                     return false;
             }
-        }catch (SudoPasswordExpiredException)
+        }
+        catch (SudoPasswordExpiredException)
         {
-            
+
             OpenSudoPasswordPromptCommand.Execute(null);
             return false;
         }
@@ -253,10 +246,8 @@ public void DeleteOcProfile()
 
     public void FanRadioButtonClicked(uint id)
     {
-        
-
         _selectedFanRadioButton = id;
-        
+
     }
 
     public static NvmlService NvmlService { get; set; } = new();

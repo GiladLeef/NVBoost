@@ -15,10 +15,10 @@ public partial class NewOcProfileWindow : ReactiveWindow<NewOcProfileWindowViewM
     public NewOcProfileWindow()
     {
         InitializeComponent();
-        
-        
+
+
         if (Design.IsDesignMode) return;
-            
+
         this.WhenActivated(action => action(ViewModel!.CreateProfileCommand.Subscribe(Close)));
     }
 }

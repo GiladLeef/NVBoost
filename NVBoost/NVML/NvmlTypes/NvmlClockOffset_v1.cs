@@ -4,10 +4,10 @@ public struct NvmlClockOffset_v1
 {
     public NvmlClockOffset_v1()
     {
-        
-        
-        
-        
+
+
+
+
         Version = 16777240;
     }
 
@@ -27,5 +27,5 @@ public struct NvmlClockOffset_v1
                "\nMinClockOffsetMHz: " + MinClockOffsetMHz +
                "\nMaxClockOffsetMHz: " + MaxClockOffsetMHz;
     }
-    
+
 }

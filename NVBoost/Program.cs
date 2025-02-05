@@ -13,12 +13,12 @@ sealed class Program
         Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/.nvboost-gui";
 
     public static Process? FanCurveProcess = null;
-    
+
     [STAThread]
-    public static void Main(string[] args) =>  BuildAvaloniaApp()
+    public static void Main(string[] args) => BuildAvaloniaApp()
         .StartWithClassicDesktopLifetime(args);
 
-    
+
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()

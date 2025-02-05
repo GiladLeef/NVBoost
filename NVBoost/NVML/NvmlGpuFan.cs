@@ -21,39 +21,37 @@ public class NvmlGPUFan : INotifyPropertyChanged
                 Updater();
             }
         });
-        
+
         ParentGPU = parentGPU;
         FanId = fanId;
     }
-    
+
     public NvmlGPU ParentGPU { get; private set; }
     public uint FanId { get; private set; }
     public uint TargetSpeed => ParentGPU.GetFanTargetSpeed(FanId).Item2;
     public uint CurrentSpeed => ParentGPU.GetFanCurrentSpeed(FanId).Item2;
-    public string Name => "Fan"+FanId;
+    public string Name => "Fan" + FanId;
 
     private void Updater()
     {
-        
-        
+
         foreach (var p in GetType().GetProperties())
         {
             OnPropertyChanged(p.Name);
         }
-        
-        
+
     }
-    
+
     public bool SetSpeed(uint speed)
     {
-        var r= ParentGPU.SetFanSpeed(FanId, speed);
+        var r = ParentGPU.SetFanSpeed(FanId, speed);
         Console.WriteLine(r);
         return r == NvmlReturnCode.NVML_SUCCESS;
     }
 
     public bool SetPolicy(NvmlFanControlPolicy policy)
     {
-        var r= ParentGPU.SetFanControlPolicy(FanId, policy);
+        var r = ParentGPU.SetFanControlPolicy(FanId, policy);
         Console.WriteLine(r);
         return r == NvmlReturnCode.NVML_SUCCESS;
     }

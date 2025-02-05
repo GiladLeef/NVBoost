@@ -10,7 +10,7 @@ namespace nvboost.Models;
 
 public class OcProfile
 {
-    public OcProfile(string name,uint gpuClockOffset, uint memClockOffset, uint powerLimitMw, FanCurve? fanCurve)
+    public OcProfile(string name, uint gpuClockOffset, uint memClockOffset, uint powerLimitMw, FanCurve? fanCurve)
     {
         Name = name;
         GPUClockOffset = gpuClockOffset;
@@ -20,7 +20,7 @@ public class OcProfile
     }
 
     [JsonConstructor]
-    public OcProfile(string name,uint gpuClockOffset, uint memClockOffset, uint powerLimitMw, string fanCurveName)
+    public OcProfile(string name, uint gpuClockOffset, uint memClockOffset, uint powerLimitMw, string fanCurveName)
     {
         Name = name;
         GPUClockOffset = gpuClockOffset;
@@ -31,9 +31,9 @@ public class OcProfile
     public string Name { get; set; }
     public uint GPUClockOffset { get; set; }
     public uint MemClockOffset { get; set; }
-    
+
     public uint PowerLimitMw { get; set; }
-    
+
     [JsonIgnore]
     public FanCurve? FanCurve => String.IsNullOrEmpty(_fanCurveName) ? null : MainWindowViewModel.FanCurvesList.First(x => x.Name == _fanCurveName).BaseFanCurve;
 
@@ -63,7 +63,7 @@ public class OcProfile
             throw;
         }
     }
-    
+
     public string ToJson()
     {
         return JsonConvert.SerializeObject(this);

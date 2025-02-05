@@ -9,15 +9,15 @@ namespace nvboost.ViewModels;
 
 public partial class SudoPasswordRequestWindowViewModel : ViewModelBase
 {
-    
+
     public ReactiveCommand<Unit, SudoPassword> SavePasswordCommand { get; }
 
     [ObservableProperty] private string _passwordBoxText = "";
 
-            
+
     public SudoPasswordRequestWindowViewModel()
     {
-        
+
         SavePasswordCommand = ReactiveCommand.Create(() => new SudoPassword(PasswordBoxText));
     }
 }

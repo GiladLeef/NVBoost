@@ -22,11 +22,11 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            
-            
+
+
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            
+
             desktop.MainWindow = new MainWindow { DataContext = new MainWindowViewModel() };
         }
 
@@ -35,7 +35,7 @@ public partial class App : Application
 
     private void TrayIcon_OnClicked(object? sender, EventArgs e)
     {
-        
+
         var mainWindow = WindowsManager.AllWindows?.FirstOrDefault(x => x.Name == "MainOcWindow");
 
         if (mainWindow != null)
@@ -46,7 +46,7 @@ public partial class App : Application
 
     private void NativeMenuItem_OnClick(object? sender, EventArgs e)
     {
-        
+
         Environment.Exit(0);
     }
 }
